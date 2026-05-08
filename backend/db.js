@@ -107,9 +107,24 @@ let dbPromise = open({
       VALUES ('Admin', 'admin@archaeohub.com', ?, 'admin', 1)`, [hash]);
       
     // Dummy News
-    await db.run(`INSERT OR IGNORE INTO news (title, content) VALUES 
-      ('Welcome to ArchaeoHub!', 'The world\\'s premier archaeology data center is now online.')`);
-  } catch (err) {}
+    const newsCount = await db.get('SELECT COUNT(*) as count FROM news');
+    if (newsCount.count === 0) {
+      await db.run(`INSERT INTO news (title, content) VALUES 
+        ('Welcome to ArchaeoHub!', 'The world\\'s premier archaeology data center is now online.'),
+        ('New Excavation in Peru', 'Archaeologists have discovered a new site near Machu Picchu.'),
+        ('AI Assistant Online', 'Our new AI-powered archaeology assistant is ready to help you with your queries.')`);
+    }
+
+    // Dummy Events
+    const eventCount = await db.get('SELECT COUNT(*) as count FROM events');
+    if (eventCount.count === 0) {
+      await db.run(`INSERT INTO events (title, content) VALUES 
+        ('Annual Archaeology Summit', 'Join us for the largest gathering of archaeologists in Cairo this June.'),
+        ('Digital Heritage Workshop', 'Learn about the latest techniques in digital preservation and 3D modeling.')`);
+    }
+  } catch (err) {
+    console.error('Database seeding error:', err);
+  }
 
   return db;
 });

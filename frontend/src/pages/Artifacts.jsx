@@ -43,7 +43,7 @@ export default function Artifacts() {
         
         <select 
           className="input-field" 
-          style={{ width: '200px', backgroundColor: 'rgba(15, 23, 42, 0.9)' }}
+          style={{ width: '100%', maxWidth: '250px', backgroundColor: 'rgba(15, 23, 42, 0.9)' }}
           value={filter}
           onChange={(e) => setFilter(e.target.value)}
         >
